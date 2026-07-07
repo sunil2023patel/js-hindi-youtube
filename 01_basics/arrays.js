@@ -52,11 +52,6 @@ const another_arr=[1,2,3,[4,5,6],7,[6,6,[4,5]]]
 const real_anothera_arr=another_arr.flat(Infinity)
 console.log(real_anothera_arr);
 
-
-
-
-
-
 console.log(Array.isArray("Hitesh"))
 console.log(Array.from("Hitesh"))
 console.log(Array.from({name:"hitesh"}))// interesting case 
