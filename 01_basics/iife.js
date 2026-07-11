@@ -8,3 +8,4 @@
 })('hitesh')
 // global variable se pollution nahi chahiye hame isliye 
 // immediately invoked krwana hai to 
+//semicolon (;) is mandetory after first iife call otherwise you will get errors (to give where to end first iife call )

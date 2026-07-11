@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Web Dev Roadmap</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --bg:#0d1117;
+    --panel:#141a22;
+    --line:#2a323d;
+    --text:#e6edf3;
+    --dim:#8b95a1;
+    --accent:#5eead4;
+    --accent2:#f0b429;
+    --done:#3ddc97;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    padding:48px 20px 80px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+  header{margin-bottom:56px;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--accent);
+    font-size:13px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+  }
+  h1{
+    font-size:clamp(28px,5vw,40px);
+    margin:8px 0 12px;
+    font-weight:700;
+    letter-spacing:-0.02em;
+  }
+  header p{color:var(--dim);font-size:15px;line-height:1.6;max-width:520px;}
+
+  .progress-wrap{margin-top:20px;}
+  .progress-bar{
+    height:6px;
+    background:var(--line);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--done),var(--accent));
+    width:10%;
+    transition:width 0.3s ease;
+  }
+  .progress-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--dim);
+    margin-top:8px;
+  }
+  .progress-label span{color:var(--accent);}
+
+  .path{position:relative;padding-left:36px;}
+  .path-line-bg{
+    position:absolute;
+    left:11px;top:8px;bottom:8px;
+    width:2px;
+    background:var(--line);
+  }
+  .path-line-fill{
+    position:absolute;
+    left:11px;top:8px;
+    width:2px;
+    height:0px;
+    background:linear-gradient(var(--done), var(--accent));
+    transition:height 0.4s ease;
+  }
+
+  .stage{position:relative;padding-bottom:40px;}
+  .stage:last-child{padding-bottom:0;}
+
+  .dot{
+    position:absolute;
+    left:-36px;top:2px;
+    width:24px;height:24px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;font-weight:700;
+    background:var(--panel);
+    border:2px solid var(--line);
+    color:var(--dim);
+    transition:all 0.3s ease;
+  }
+  .stage.done .dot{border-color:var(--done);color:var(--done);background:#0f2018;}
+  .stage.current .dot{
+    border-color:var(--accent);color:var(--bg);background:var(--accent);
+    box-shadow:0 0 0 4px rgba(94,234,212,0.15);
+  }
+
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 20px;
+  }
+  .stage.current .card{border-color:var(--accent);}
+  .stage.done .card{opacity:0.7;}
+
+  .card-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;}
+  .card-top-left{display:flex;align-items:center;gap:10px;}
+  .card-top h3{margin:0;font-size:16px;font-weight:600;}
+
+  .check{
+    width:18px;height:18px;
+    border-radius:5px;
+    border:2px solid var(--line);
+    background:transparent;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    padding:0;
+    transition:all 0.15s ease;
+  }
+  .check:hover{border-color:var(--accent);}
+  .check svg{width:11px;height:11px;opacity:0;transition:opacity 0.15s ease;}
+  .stage.checked .check{background:var(--done);border-color:var(--done);}
+  .stage.checked .check svg{opacity:1;}
+  .stage.checked h3{color:var(--dim);text-decoration:line-through;text-decoration-color:var(--line);}
+  .stage.checked .card{opacity:0.55;}
+  .tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    padding:3px 8px;
+    border-radius:20px;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    white-space:nowrap;
+  }
+  .tag.done{background:rgba(61,220,151,0.12);color:var(--done);}
+  .tag.current{background:rgba(94,234,212,0.15);color:var(--accent);}
+  .tag.todo{background:rgba(139,149,161,0.1);color:var(--dim);}
+
+  .card p.desc{color:var(--dim);font-size:13.5px;margin:0 0 10px;line-height:1.5;}
+
+  .items{display:flex;flex-wrap:wrap;gap:6px;}
+  .item{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--line);
+    padding:4px 9px;
+    border-radius:6px;
+    color:var(--text);
+  }
+
+  .branch{
+    margin-top:10px;
+    font-size:12px;
+    color:var(--dim);
+    border-left:2px solid var(--line);
+    padding-left:10px;
+  }
+
+  footer{
+    margin-top:56px;
+    padding-top:24px;
+    border-top:1px solid var(--line);
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--dim);
+    text-align:center;
+  }
+  footer span{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">git log --roadmap</div>
+    <h1>Full Stack Web Dev Path</h1>
+    <p>One track, one step at a time. Finish each stage with a small project before moving to the next commit.</p>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label"><span id="progressCount">0</span> / 10 stages checked off</div>
+    </div>
+  </header>
+
+  <div class="path">
+    <div class="path-line-bg"></div>
+    <div class="path-line-fill" id="pathFill"></div>
+
+    <div class="stage">
+      <div class="dot">✓</div>
+      <div class="card">
+        <div class="card-top"><div class="card-top-left"><button class="check" onclick="toggleStage(this)"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6L4.5 8.5L10 3" stroke="#0d1117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><h3>HTML & CSS</h3></div><span class="tag done">done</span></div>
+        <p class="desc">Structure and styling. You've got this.</p>
+        <div class="items"><span class="item">semantic HTML</span><span class="item">flexbox</span><span class="item">grid</span><span class="item">responsive design</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="dot">●</div>
+      <div class="card">
+        <div class="card-top"><div class="card-top-left"><button class="check" onclick="toggleStage(this)"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6L4.5 8.5L10 3" stroke="#0d1117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><h3>JavaScript</h3></div><span class="tag current">in progress</span></div>
+        <p class="desc">The logic layer. This is where you are right now.</p>
+        <div class="items"><span class="item">variables</span><span class="item">functions</span><span class="item">arrays/objects</span><span class="item">DOM</span><span class="item">async/await</span><span class="item">fetch API</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="dot">3</div>
+      <div class="card">
+        <div class="card-top"><div class="card-top-left"><button class="check" onclick="toggleStage(this)"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6L4.5 8.5L10 3" stroke="#0d1117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><h3>React</h3></div><span class="tag todo">next</span></div>
+        <p class="desc">One frontend framework, chosen and done — no detours into Vue or Angular.</p>
+        <div class="items"><span class="item">components</span><span class="item">props & state</span><span class="item">hooks</span><span class="item">React Router</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="dot">4</div>
+      <div class="card">
+        <div class="card-top"><div class="card-top-left"><button class="check" onclick="toggleStage(this)"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6L4.5 8.5L10 3" stroke="#0d1117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><h3>Git & GitHub</h3></div><span class="tag todo">ongoing</span></div>
+        <p class="desc">Learn early, use for every project from here on.</p>
+        <div class="items"><span class="item">commit</span><span class="item">branch</span><span class="item">push/pull</span><span class="item">pull requests</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="dot">5</div>
+      <div class="card">
+        <div class="card-top"><div class="card-top-left"><button class="check" onclick="toggleStage(this)"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6L4.5 8.5L10 3" stroke="#0d1117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><h3>Backend</h3></div><span class="tag todo">todo</span></div>
+        <p class="desc">Node.js + Express — build the APIs your frontend talks to.</p>
+        <div class="items"><span class="item">routes</span><span class="item">middleware</span><span class="item">REST API design</span><span class="item">env vars</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="dot">6</div>
+      <div class="card">
+        <div class="card-top"><div class="card-top-left"><button class="check" onclick="toggleStage(this)"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6L4.5 8.5L10 3" stroke="#0d1117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><h3>Databases</h3></div><span class="tag todo">todo</span></div>
+        <p class="desc">Pick one and learn it well.</p>
+        <div class="items"><span class="item">MongoDB</span><span class="item">or PostgreSQL</span><span class="item">CRUD operations</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="dot">7</div>
+      <div class="card">
+        <div class="card-top"><div class="card-top-left"><button class="check" onclick="toggleStage(this)"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6L4.5 8.5L10 3" stroke="#0d1117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><h3>Connect Frontend + Backend</h3></div><span class="tag todo">todo</span></div>
+        <p class="desc">Wire the pieces together into one real app.</p>
+        <div class="items"><span class="item">Axios / fetch</span><span class="item">request/response cycle</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="dot">8</div>
+      <div class="card">
+        <div class="card-top"><div class="card-top-left"><button class="check" onclick="toggleStage(this)"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6L4.5 8.5L10 3" stroke="#0d1117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><h3>Authentication</h3></div><span class="tag todo">todo</span></div>
+        <p class="desc">How login and signup actually work under the hood.</p>
+        <div class="items"><span class="item">JWT</span><span class="item">sessions</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="dot">9</div>
+      <div class="card">
+        <div class="card-top"><div class="card-top-left"><button class="check" onclick="toggleStage(this)"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6L4.5 8.5L10 3" stroke="#0d1117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><h3>Deployment</h3></div><span class="tag todo">todo</span></div>
+        <p class="desc">Ship it. Make projects live and shareable.</p>
+        <div class="items"><span class="item">Vercel / Netlify</span><span class="item">Render / Railway</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="dot">10</div>
+      <div class="card">
+        <div class="card-top"><div class="card-top-left"><button class="check" onclick="toggleStage(this)"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6L4.5 8.5L10 3" stroke="#0d1117" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><h3>Extras</h3></div><span class="tag todo">later</span></div>
+        <p class="desc">Only after everything above is solid.</p>
+        <div class="items"><span class="item">TypeScript</span><span class="item">testing (Jest)</span><span class="item">Docker</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>build one small project per stage · don't skip ahead · <span id="footerStatus">you are on step 2 of 10</span></footer>
+
+</div>
+
+<script>
+  const stages = document.querySelectorAll('.stage');
+  const total = stages.length;
+
+  // Remember each stage's original tag label (e.g. "next", "ongoing", "later")
+  // so it can be restored once a stage is no longer checked or current
+  stages.forEach(s => {
+    const tag = s.querySelector('.tag');
+    tag.dataset.default = tag.textContent;
+  });
+
+  function toggleStage(btn){
+    const stage = btn.closest('.stage');
+    stage.classList.toggle('checked');
+    updateProgress();
+  }
+
+  function updateProgress(){
+    const checked = document.querySelectorAll('.stage.checked').length;
+    const pct = checked/total*100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressCount').textContent = checked;
+
+    // Move the glowing "current" marker to the first unchecked stage,
+    // and mark everything checked as done
+    let currentAssigned = false;
+    let currentStageEl = null;
+    stages.forEach((s, i) => {
+      const dot = s.querySelector('.dot');
+      const tag = s.querySelector('.tag');
+      const isChecked = s.classList.contains('checked');
+      s.classList.remove('done', 'current');
+
+      if (isChecked) {
+        s.classList.add('done');
+        dot.textContent = '✓';
+        tag.className = 'tag done';
+        tag.textContent = 'done';
+      } else if (!currentAssigned) {
+        s.classList.add('current');
+        dot.textContent = '●';
+        currentAssigned = true;
+        currentStageEl = s;
+        tag.className = 'tag current';
+        tag.textContent = 'in progress';
+      } else {
+        dot.textContent = i + 1;
+        tag.className = 'tag todo';
+        tag.textContent = tag.dataset.default;
+      }
+    });
+
+    // Calculate the exact pixel position of the target dot (stages vary in height,
+    // so a plain percentage doesn't line up with the actual dot position).
+    // Measure from the fill line's own top edge, not the outer container.
+    const pathLineBg = document.querySelector('.path-line-bg');
+    const bgRect = pathLineBg.getBoundingClientRect();
+    const targetStage = currentStageEl || stages[stages.length - 1];
+    const targetDot = targetStage.querySelector('.dot');
+    const dotRect = targetDot.getBoundingClientRect();
+    const fillHeight = Math.max(0, (dotRect.top + dotRect.height / 2) - bgRect.top);
+    document.getElementById('pathFill').style.height = fillHeight + 'px';
+
+    const footer = document.getElementById('footerStatus');
+    if(checked === total){
+      footer.textContent = "all stages complete — go build something real";
+    } else {
+      footer.textContent = checked + " of " + total + " stages checked off";
+    }
+  }
+
+  // Start with HTML & CSS checked off, so JavaScript becomes the current stage
+  stages[0].classList.add('checked');
+  updateProgress();
+</script>
+
+</body>
+</html>
